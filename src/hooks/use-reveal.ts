@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { isTouchDevice, prefersReducedMotion } from "@/lib/touch";
+import { isIOS, isTouchDevice, prefersReducedMotion } from "@/lib/touch";
 
 export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.15) {
   const ref = useRef<T | null>(null);
@@ -9,9 +9,9 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
     const el = ref.current;
     if (!el) return;
 
-    // On mobile/tablet or reduced-motion: always visible, no animation.
+    // On iOS, mobile/tablet or reduced-motion: always visible, no animation.
     const isMobileViewport = window.innerWidth < 1024;
-    if (isTouchDevice() || prefersReducedMotion() || isMobileViewport) {
+    if (isIOS() || isTouchDevice() || prefersReducedMotion() || isMobileViewport) {
       setVisible(true);
       return;
     }

@@ -1,15 +1,28 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { isIOS, isTouchDevice } from "@/lib/touch";
 
 /**
  * Reveal – scroll-triggered fade-in on desktop only.
  *
- * On mobile / tablet (window width < 1024 px) the component is a plain <div>
- * with no data-attributes, no IntersectionObserver and no CSS transition, so
- * every section paints immediately on the first frame.
+ * On mobile, tablet, or ANY iOS device the component is a plain <div>
+ * with no data-attributes, no IntersectionObserver and no CSS transition,
+ * so every section paints immediately on the first frame.
  *
- * We deliberately avoid importing useReveal here so that the IntersectionObserver
- * is never instantiated on mobile at all.
+ * iOS Safari has a notoriously unreliable IntersectionObserver (it fires
+ * late, misses entries during momentum scrolling, and can leave sections
+ * permanently invisible). We short-circuit ALL animation on iOS.
  */
+
+/**
+ * Compute once, synchronously at module load time (client-only).
+ * This avoids a two-render cycle (isMobile true → useLayoutEffect → false)
+ * that causes the visible→hidden→visible flash on iPhone.
+ */
+const IS_MOBILE_OR_IOS =
+  typeof window === "undefined"
+    ? true // SSR → safe default (always visible)
+    : isIOS() || isTouchDevice() || window.innerWidth < 1024;
+
 export function Reveal({
   children,
   delay = 0,
@@ -19,25 +32,12 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
-  // Detect mobile synchronously via a ref so we never go through an async
-  // useState/useEffect cycle that would cause a flicker.
-  const isMobileRef = useRef<boolean>(false);
-  const [isMobile, setIsMobile] = useState(true); // start visible (safe default for SSR + mobile)
-
-  // Determine layout on the first synchronous layout pass so we don't paint
-  // twice on desktop.
-  useLayoutEffect(() => {
-    const mobile = window.innerWidth < 1024;
-    isMobileRef.current = mobile;
-    setIsMobile(mobile);
-  }, []);
-
-  // ── Mobile / tablet: plain passthrough, no animation machinery ──────────
-  if (isMobile) {
+  // ── Mobile / iOS / tablet: plain passthrough, no animation machinery ──────────
+  if (IS_MOBILE_OR_IOS) {
     return <div className={className}>{children}</div>;
   }
 
-  // ── Desktop: full scroll-reveal animation ────────────────────────────────
+  // ── Desktop (non-iOS): full scroll-reveal animation ───────────────────────
   return (
     <DesktopReveal delay={delay} className={className}>
       {children}
