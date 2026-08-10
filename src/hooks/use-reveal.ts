@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { isTouchDevice, prefersReducedMotion } from "@/lib/touch";
 
 export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.15) {
   const ref = useRef<T | null>(null);
@@ -7,6 +8,10 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // On touch devices IntersectionObserver callbacks can be delayed or
+    // dropped, which would leave below-fold sections stuck at opacity 0
+    // (blank content). Keep everything visible there. Same for reduced motion.
+    if (isTouchDevice() || prefersReducedMotion()) return;
     // Start above-the-fold content already visible so it never waits on
     // hydration. Only animate-in elements that begin below the fold.
     const rect = el.getBoundingClientRect();
@@ -24,7 +29,16 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
       { threshold, rootMargin: "0px 0px -60px 0px" },
     );
     io.observe(el);
-    return () => io.disconnect();
+    // Safety net: never allow content to stay hidden if the observer never
+    // fires (slow mobile devices, scroll container quirks, etc).
+    const fallback = window.setTimeout(() => {
+      io.disconnect();
+      setVisible(true);
+    }, 3000);
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
   }, [threshold]);
 
   return { ref, visible };

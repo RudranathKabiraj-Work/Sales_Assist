@@ -7,11 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ReactLenis } from "lenis/react";
 
 import appCss from "../styles.css?url";
 import logo from "../assets/Logo.jpeg";
+import { isTouchDevice } from "../lib/touch";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -126,26 +127,35 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // Lenis smooth scrolling is a desktop nicety. On touch devices it hijacks
+  // the scroll into a rAF loop and fights native scrolling (content appears
+  // blank and the page snaps back to the top). Native scrolling is instant
+  // on phones, so only mount Lenis on non-touch devices. The initial state
+  // must match SSR output to avoid hydration mismatches.
+  const [enableSmooth, setEnableSmooth] = useState(false);
+
+  useEffect(() => {
+    setEnableSmooth(!isTouchDevice());
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactLenis
-        root
-        options={{
-          // Keep smooth scrolling on desktop only. On touch devices Lenis
-          // hijacks the scroll into a rAF loop (syncTouch + touchMultiplier),
-          // which is very slow on phones. Native scrolling is instant.
-          syncTouch: false,
-          touchMultiplier: 1,
-          lerp: 0.09,
-          wheelMultiplier: 1,
-          anchors: true,
-          respectReducedMotion: true,
-        }}
-      >
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      {enableSmooth ? (
+        <ReactLenis
+          root
+          options={{
+            lerp: 0.09,
+            wheelMultiplier: 1,
+            anchors: true,
+            respectReducedMotion: true,
+          }}
+        >
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </ReactLenis>
+      ) : (
         <Outlet />
-      </ReactLenis>
+      )}
     </QueryClientProvider>
   );
 }
