@@ -484,15 +484,28 @@ button.border-border.bg-white:active {
 }
 
 @utility reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 1;
+  transform: none;
 
   &[data-visible="true"] {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal[data-ready="true"]:not([data-visible="true"]) {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal[data-ready="true"][data-visible="true"] {
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   }
 }
 

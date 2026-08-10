@@ -132,9 +132,13 @@ function RootComponent() {
       <ReactLenis
         root
         options={{
+          // Keep smooth scrolling on desktop only. On touch devices Lenis
+          // hijacks the scroll into a rAF loop (syncTouch + touchMultiplier),
+          // which is very slow on phones. Native scrolling is instant.
+          syncTouch: false,
+          touchMultiplier: 1,
           lerp: 0.09,
           wheelMultiplier: 1,
-          touchMultiplier: 1.5,
           anchors: true,
           respectReducedMotion: true,
         }}
