@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Reveal } from "./Reveal";
 
 const G3_NOTIFICATIONS = [
@@ -10,6 +10,8 @@ const G3_NOTIFICATIONS = [
 ];
 
 export function HowItWorks() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
   const [stack, setStack] = useState([
     G3_NOTIFICATIONS[0],
     G3_NOTIFICATIONS[1],
@@ -18,7 +20,21 @@ export function HowItWorks() {
   const [animating, setAnimating] = useState(false);
   const [flashLast, setFlashLast] = useState(false);
 
+  // Only start the animation interval when this section is visible —
+  // prevents constant re-renders blocking iOS touch during initial load.
   useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); io.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
     let noteIndex = 3;
     const interval = setInterval(() => {
       setAnimating(true);
@@ -44,10 +60,10 @@ export function HowItWorks() {
     }, 2800);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [inView]);
 
   return (
-    <section id="how" className="bg-white text-foreground px-6 py-24 sm:px-12 md:py-28 border-y border-border">
+    <section ref={sectionRef} id="how" className="bg-white text-foreground px-6 py-24 sm:px-12 md:py-28 border-y border-border">
       <style>{`
         /* G1 Animation styles */
         .g1-inputs {

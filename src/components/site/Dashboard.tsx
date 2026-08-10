@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Reveal } from "./Reveal";
 
 const RANGES_DATA = [
@@ -73,13 +73,29 @@ function getSmoothPath(c: number[][]) {
 }
 
 export function Dashboard() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
   const [activeIdx, setActiveIdx] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [highlightIdx, setHighlightIdx] = useState(1);
   const [animatedPts, setAnimatedPts] = useState<number[]>(RANGES_DATA[1].pts);
   const [animatedNums, setAnimatedNums] = useState<number[]>(RANGES_DATA[1].t);
 
+  // Only start animations when section is visible — prevents main-thread
+  // saturation on iOS during initial page load (which blocks touch input).
   useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); io.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
     let animationFrameId: number;
     const start = performance.now();
     const duration = 950;
@@ -108,9 +124,10 @@ export function Dashboard() {
 
     animationFrameId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(animationFrameId);
-  }, [activeIdx]);
+  }, [activeIdx, inView]);
 
   useEffect(() => {
+    if (!inView) return;
     const cycleInterval = setInterval(() => {
       setDropdownOpen(true);
       const nextIdx = (activeIdx + 1) % RANGES_DATA.length;
@@ -135,7 +152,7 @@ export function Dashboard() {
     }, 5500);
 
     return () => clearInterval(cycleInterval);
-  }, [activeIdx]);
+  }, [activeIdx, inView]);
 
   const coords = getCoords(animatedPts);
   const pathD = getSmoothPath(coords);
@@ -143,7 +160,7 @@ export function Dashboard() {
   const lastCoord = coords[coords.length - 1] || [0, 0];
 
   return (
-    <section className="bg-background text-foreground px-6 py-[80px] sm:px-12" id="dashboard">
+    <section ref={sectionRef} className="bg-background text-foreground px-6 py-[80px] sm:px-12" id="dashboard">
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-center">
           {/* Left Column: Text */}
