@@ -1,17 +1,26 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { isIOS, isTouchDevice, prefersReducedMotion } from "@/lib/touch";
+import { useEffect, useRef, useState } from "react";
+
+function shouldSkipAnimation(): boolean {
+  if (typeof window === "undefined") return true;
+  const ua = navigator.userAgent;
+  if (/iP(hone|od|ad)/.test(ua)) return true;
+  if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) return true;
+  if (window.matchMedia("(pointer: coarse)").matches) return true;
+  if (window.innerWidth < 1024) return true;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
+  return false;
+}
 
 export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.15) {
   const ref = useRef<T | null>(null);
   const [visible, setVisible] = useState(true);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     // On iOS, mobile/tablet or reduced-motion: always visible, no animation.
-    const isMobileViewport = window.innerWidth < 1024;
-    if (isIOS() || isTouchDevice() || prefersReducedMotion() || isMobileViewport) {
+    if (shouldSkipAnimation()) {
       setVisible(true);
       return;
     }

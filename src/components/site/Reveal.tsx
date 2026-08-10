@@ -1,27 +1,37 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { isIOS, isTouchDevice } from "@/lib/touch";
+import { useEffect, useRef, type ReactNode } from "react";
 
 /**
- * Reveal – scroll-triggered fade-in on desktop only.
+ * Reveal – scroll-triggered fade-in on ≥1024 px non-iOS desktop ONLY.
  *
- * On mobile, tablet, or ANY iOS device the component is a plain <div>
- * with no data-attributes, no IntersectionObserver and no CSS transition,
- * so every section paints immediately on the first frame.
+ * Key design decisions to fix iOS lag:
  *
- * iOS Safari has a notoriously unreliable IntersectionObserver (it fires
- * late, misses entries during momentum scrolling, and can leave sections
- * permanently invisible). We short-circuit ALL animation on iOS.
+ * 1. NO module-level window access — SSR renders a plain <div class="reveal">
+ *    which CSS keeps fully visible (opacity:1). Zero hydration mismatches.
+ *
+ * 2. NO useLayoutEffect, NO React state — the JS enhancement is purely
+ *    imperative via a useEffect that sets data-attributes directly on the DOM.
+ *    This means React never re-renders the component for visibility changes.
+ *
+ * 3. On iOS / touch / mobile the useEffect returns early immediately, so the
+ *    element stays at opacity:1 forever — no flash, no delay, no IntersectionObserver.
+ *
+ * 4. CSS default for .reveal is opacity:1 — so even if JS never runs (SSR,
+ *    slow device) content is always visible.
  */
 
-/**
- * Compute once, synchronously at module load time (client-only).
- * This avoids a two-render cycle (isMobile true → useLayoutEffect → false)
- * that causes the visible→hidden→visible flash on iPhone.
- */
-const IS_MOBILE_OR_IOS =
-  typeof window === "undefined"
-    ? true // SSR → safe default (always visible)
-    : isIOS() || isTouchDevice() || window.innerWidth < 1024;
+function getIsDesktopNonIOS(): boolean {
+  if (typeof window === "undefined") return false;
+  const ua = navigator.userAgent;
+  // Explicit iOS UA check — catches iPhone, iPad (all iOS 13+ variants incl iPadOS)
+  if (/iP(hone|od|ad)/.test(ua)) return false;
+  // iPad on iOS 13+ lies and reports MacIntel but has maxTouchPoints > 1
+  if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) return false;
+  // Android, other touch devices
+  if (window.matchMedia("(pointer: coarse)").matches) return false;
+  // Viewport too narrow (e.g. desktop browser resized)
+  if (window.innerWidth < 1024) return false;
+  return true;
+}
 
 export function Reveal({
   children,
@@ -32,78 +42,58 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
-  // ── Mobile / iOS / tablet: plain passthrough, no animation machinery ──────────
-  if (IS_MOBILE_OR_IOS) {
-    return <div className={className}>{children}</div>;
-  }
+  const ref = useRef<HTMLDivElement>(null);
 
-  // ── Desktop (non-iOS): full scroll-reveal animation ───────────────────────
-  return (
-    <DesktopReveal delay={delay} className={className}>
-      {children}
-    </DesktopReveal>
-  );
-}
+  useEffect(() => {
+    // On mobile/iOS: do nothing. The CSS default keeps .reveal at opacity:1.
+    if (!getIsDesktopNonIOS()) return;
 
-function DesktopReveal({
-  children,
-  delay,
-  className,
-}: {
-  children: ReactNode;
-  delay: number;
-  className: string;
-}) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [visible, setVisible] = useState(true);
-  const [ready, setReady] = useState(false);
-
-  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Only animate elements that start below the fold.
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) return;
+    // Mark as JS-enhanced — CSS will now apply animation.
+    el.setAttribute("data-reveal", "ready");
 
-    setVisible(false);
+    const rect = el.getBoundingClientRect();
+    // Already in view on page load — mark visible immediately, no observer.
+    if (rect.top < window.innerHeight * 0.95) {
+      el.setAttribute("data-visible", "true");
+      return;
+    }
+
+    // Below fold — hide and watch for intersection.
+    el.setAttribute("data-visible", "false");
 
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
+        for (const e of entries) {
           if (e.isIntersecting) {
-            setVisible(true);
+            e.target.setAttribute("data-visible", "true");
             io.unobserve(e.target);
           }
-        });
+        }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
     );
     io.observe(el);
 
-    // Safety net: reveal after 3 s if the observer never fires.
-    const fallback = window.setTimeout(() => {
+    // Safety net: if observer never fires, reveal after 1.5s.
+    const safety = window.setTimeout(() => {
+      el.setAttribute("data-visible", "true");
       io.disconnect();
-      setVisible(true);
-    }, 3000);
+    }, 1500);
 
     return () => {
       io.disconnect();
-      clearTimeout(fallback);
+      clearTimeout(safety);
     };
-  }, []);
-
-  useEffect(() => {
-    setReady(true);
   }, []);
 
   return (
     <div
       ref={ref}
-      data-visible={visible}
-      data-ready={ready}
-      style={{ transitionDelay: `${delay}ms` }}
-      className={`reveal ${className}`}
+      className={`reveal ${className}`.trim()}
+      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}
     </div>
