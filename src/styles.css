@@ -7,6 +7,23 @@
   scroll-behavior: auto !important;
 }
 
+/* Cancel ALL Lenis side-effects on mobile/tablet — the JS is not mounted
+   there but the imported lenis CSS still runs and sets html height/scroll
+   properties which cause the page to snap to top and sections to go blank. */
+@media (max-width: 1023px) {
+  html.lenis,
+  html {
+    height: auto !important;
+    overflow: auto !important;
+    overscroll-behavior: auto !important;
+    scroll-behavior: auto !important;
+  }
+  body {
+    overflow: auto !important;
+    overscroll-behavior: auto !important;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -108,8 +125,10 @@
       filter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  html {
-    scroll-behavior: smooth;
+  @media (min-width: 1024px) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 }
 
@@ -493,14 +512,19 @@ button.border-border.bg-white:active {
   }
 }
 
-/* Disable reveal transitions on mobile/tablet viewports to ensure instant loading */
+/* On mobile/tablet: reveal elements are ALWAYS fully visible, no JS or CSS delay */
 @media (max-width: 1023px) {
   .reveal,
+  .reveal[data-ready="true"],
+  .reveal[data-ready="false"],
+  .reveal[data-visible="true"],
+  .reveal[data-visible="false"],
   .reveal[data-ready="true"]:not([data-visible="true"]),
   .reveal[data-ready="true"][data-visible="true"] {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+    animation: none !important;
   }
 }
 
