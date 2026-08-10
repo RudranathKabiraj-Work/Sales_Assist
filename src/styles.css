@@ -25,48 +25,35 @@
   }
 }
 
-/* ── Mobile animation kill-switch ────────────────────────────────────────
-   All decorative CSS keyframe animations (spinning clocks, floating particles,
-   bouncing bars, waveforms, etc.) run every frame and saturate the mobile GPU.
-   On mobile we stop them entirely — the sections still look great, just static.
-   This is the single biggest performance win for iOS/Android. */
+/* ── Mobile: targeted reveal fix only ─────────────────────────────────────
+   We do NOT kill all animations — the decorative ones (clock, wave bars,
+   floating chips, hover effects) are GPU-composited and look great on mobile.
+   We ONLY remove transition-delays on .reveal wrappers, which were the source
+   of the "sections loading with delay" bug on iOS. Everything else is kept. */
 @media (max-width: 1023px) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-delay: 0s !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    transition-delay: 0s !important;
+  /* Kill will-change hints — they promote layers even off-screen, consuming
+     GPU memory on iOS. Let the browser decide. */
+  * {
     will-change: auto !important;
   }
-  /* Restore the one transition we DO want: FAQ accordion open/close */
-  .faq-body {
-    transition-duration: 200ms !important;
-  }
 
-  /* ── Reveal wrapper: completely transparent on mobile ──────────────────
-     display:contents removes the box entirely — no opacity, no transform,
-     no stacking context. Children slot directly into the parent layout.
-     This is the nuclear option: the .reveal div stops existing on mobile. */
+  /* Remove any lingering transition-delay from Reveal on mobile.
+     The reveal div is display:contents so this is a safety belt. */
   .reveal {
+    transition-delay: 0s !important;
     display: contents !important;
   }
 
-  /* ── Section paint isolation ───────────────────────────────────────────
-     contain:content tells iOS to paint each section independently.
-     Scrolling into one section never causes the whole page to repaint. */
-  section {
-    contain: content;
+  /* Restore FAQ accordion transition specifically */
+  .faq-body {
+    transition-duration: 200ms !important;
+    transition-delay: 0s !important;
   }
 
-  /* ── Remove expensive GPU blur/glow divs on mobile ────────────────────
-     Large blur() operations (blur-[140px], blur(20px)) are extremely
-     expensive on iOS GPU. These are decorative-only — hiding them on
-     mobile has zero UX impact but massive performance gain. */
-  .mobile-hide-glow {
-    display: none !important;
+  /* Section paint isolation: each section paints independently,
+     so scrolling one section doesn't repaint the whole page. */
+  section {
+    contain: content;
   }
 }
 
