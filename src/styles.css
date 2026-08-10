@@ -493,7 +493,18 @@ button.border-border.bg-white:active {
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
+/* Disable reveal transitions on mobile/tablet viewports to ensure instant loading */
+@media (max-width: 1023px) {
+  .reveal,
+  .reveal[data-ready="true"]:not([data-visible="true"]),
+  .reveal[data-ready="true"][data-visible="true"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   .reveal[data-ready="true"]:not([data-visible="true"]) {
     opacity: 0;
     transform: translateY(24px);
