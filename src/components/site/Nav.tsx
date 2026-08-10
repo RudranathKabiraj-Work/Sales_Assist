@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import logo from "@/assets/Logo.jpeg";
+import { HillsButton } from "./HillsButton";
 
 const links = [
   { label: "About", href: "#about" },
@@ -22,20 +24,27 @@ export function Nav() {
       <nav
         className="mx-auto flex max-w-[1200px] h-[62px] items-center justify-between rounded-2xl border px-4 transition-all duration-500 sm:px-5"
         style={{
-          background: scrolled ? "rgba(20, 20, 22, 0.9)" : "rgba(20, 20, 22, 0.72)",
-          borderColor: scrolled ? "rgba(201, 242, 58, 0.22)" : "rgba(201, 242, 58, 0.14)",
+          background: scrolled ? "rgba(241, 244, 248, 0.95)" : "rgba(241, 244, 248, 0.80)",
+          borderColor: scrolled ? "rgba(148, 177, 52, 0.35)" : "rgba(148, 177, 52, 0.2)",
           boxShadow: scrolled 
-            ? "0 0 30px rgba(201, 242, 58, 0.2), 0 12px 34px rgba(0, 0, 0, 0.55)" 
-            : "0 0 22px rgba(201, 242, 58, 0.13), 0 10px 30px rgba(0, 0, 0, 0.45)",
+            ? "0 0 30px rgba(148, 177, 52, 0.12), 0 8px 24px rgba(0, 0, 0, 0.1)" 
+            : "0 0 20px rgba(148, 177, 52, 0.07), 0 4px 16px rgba(0, 0, 0, 0.06)",
           backdropFilter: "blur(14px)",
           WebkitBackdropFilter: "blur(14px)",
         }}
       >
-        <a href="#top" className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-lime font-mono text-xs font-bold text-primary-foreground">
-            RW
-          </span>
-          <span className="text-[17px] font-bold tracking-tight">Ryan Wegner</span>
+        <a href="#top" className="flex items-center select-none overflow-hidden h-[54px] max-w-[280px]">
+          <img
+            src={logo}
+            alt="Sales Assist Logo"
+            className="h-[130px] w-auto object-contain mix-blend-multiply my-[-38px]"
+            style={{
+              WebkitMaskImage:
+                "radial-gradient(120% 115% at 50% 50%, black 55%, rgba(0,0,0,0.6) 75%, transparent 100%)",
+              maskImage:
+                "radial-gradient(120% 115% at 50% 50%, black 55%, rgba(0,0,0,0.6) 75%, transparent 100%)",
+            }}
+          />
         </a>
 
         <div className="hidden items-center gap-8 md:flex">
@@ -51,12 +60,12 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a
+          <HillsButton
             href="#start"
-            className="hidden rounded-xl bg-lime px-5 py-2.5 text-sm font-bold text-primary-foreground transition-transform duration-200 hover:scale-105 sm:inline-flex"
+            className="hidden rounded-xl px-5 py-2.5 text-sm font-bold sm:inline-flex"
           >
             Book A Call
-          </a>
+          </HillsButton>
           <button
             aria-label="Menu"
             onClick={() => setOpen((v) => !v)}
@@ -84,13 +93,13 @@ export function Nav() {
               {l.label}
             </a>
           ))}
-          <a
+          <HillsButton
             href="#start"
             onClick={() => setOpen(false)}
-            className="mt-2 block rounded-xl bg-lime py-2.5 text-center text-sm font-bold text-primary-foreground"
+            className="mt-2 flex w-full rounded-xl py-2.5 text-center text-sm font-bold"
           >
             Book A Call
-          </a>
+          </HillsButton>
         </div>
       )}
     </header>

@@ -2,46 +2,62 @@ import { Reveal } from "./Reveal";
 
 const PROBLEMS = [
   {
-    title: "Unpredictable income",
-    body: "Some months are huge, others fall flat. With no system feeding your calendar, revenue is a rollercoaster you can't plan around.",
+    title: "Slow Response",
+    body: "Customers expect immediate replies.",
     icon: (
       <svg viewBox="0 0 40 40" fill="none" className="w-[28px] h-[28px] overflow-visible">
-        <circle cx="20" cy="20" r="12.5" stroke="#ff6b6b" strokeWidth="2.4" />
+        <circle cx="20" cy="20" r="12.5" stroke="#556331" strokeWidth="2.4" />
         <line
           className="pg-hand"
           x1="20"
           y1="20"
           x2="20"
           y2="10.5"
-          stroke="#ff6b6b"
+          stroke="#556331"
           strokeWidth="2.4"
           strokeLinecap="round"
         />
-        <circle cx="20" cy="20" r="1.7" fill="#ff6b6b" />
+        <circle cx="20" cy="20" r="1.7" fill="#556331" />
       </svg>
     ),
   },
   {
-    title: "Everything runs through you",
-    body: "You're the marketer, the setter, the closer and the coach. You've bought yourself a job, not a business.",
+    title: "Inconsistent Follow-up",
+    body: "Older opportunities disappear while new leads get attention.",
     icon: (
-      <svg viewBox="0 0 40 40" fill="none" className="w-[28px] h-[28px] overflow-visible">
-        <rect x="7.5" y="7.5" width="25" height="25" rx="5" stroke="#ff6b6b" strokeWidth="2.2" />
-        <circle className="pg-m" cx="15" cy="15" r="2.2" fill="#ff6b6b" />
-        <circle className="pg-m pg-m2" cx="25" cy="15" r="2.2" fill="#ff6b6b" />
-        <circle className="pg-m pg-m3" cx="15" cy="25" r="2.2" fill="#ff6b6b" />
-        <circle className="pg-m pg-m4" cx="25" cy="25" r="2.2" fill="#ff6b6b" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="#556331" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-[26px] h-[26px] overflow-visible">
+        {/* Calendar icon outline */}
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+        <line x1="16" y1="2" x2="16" y2="6" />
+        <line x1="8" y1="2" x2="8" y2="6" />
+        <line x1="3" y1="10" x2="21" y2="10" />
+        {/* Alert/Warning exclamation sign on calendar to mark inconsistency */}
+        <path d="M12 14v2M12 18h.01" strokeWidth="3" className="pg-alert-blink" style={{ transformOrigin: "12px 16px" }} />
       </svg>
     ),
   },
   {
-    title: "Stuck at a ceiling",
-    body: "You've plateaued and more hustle isn't moving the needle. You need leverage and systems, not more hours.",
+    title: "Too Much Manual Work",
+    body: "Your team spends more time managing leads than selling.",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="#556331" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="w-[26px] h-[26px] overflow-visible">
+        {/* Document clipboard / papers with lines to show manual work */}
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <polyline points="14 2 14 8 20 8" />
+        <line x1="16" y1="13" x2="8" y2="13" className="pg-shake" />
+        <line x1="16" y1="17" x2="8" y2="17" className="pg-shake pg-shake2" />
+        <polyline points="10 9 9 9 8 9" className="pg-shake pg-shake3" />
+      </svg>
+    ),
+  },
+  {
+    title: "No Visibility",
+    body: "Founders shouldn't have to ask if someone followed up.",
     icon: (
       <svg viewBox="0 0 40 40" fill="none" className="w-[28px] h-[28px] overflow-visible">
         <polyline
           fill="none"
-          stroke="#ff6b6b"
+          stroke="#556331"
           strokeWidth="2.4"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -54,7 +70,7 @@ const PROBLEMS = [
             values="5,25 13,15 21,28 29,13 34,22; 5,18 13,27 21,14 29,24 34,16; 5,27 13,13 21,26 29,15 34,27; 5,15 13,24 21,16 29,28 34,13; 5,25 13,15 21,28 29,13 34,22"
           />
         </polyline>
-        <circle cx="34" r="3" fill="#ff6b6b">
+        <circle cx="34" r="3" fill="#556331">
           <animate attributeName="cy" dur="3.4s" repeatCount="indefinite" values="22;16;27;13;22" />
         </circle>
       </svg>
@@ -65,27 +81,27 @@ const PROBLEMS = [
 const REASONS = [
   {
     n: "01",
-    title: "Proven, not",
-    em: "theory",
-    body: "Everything I show you is battle-tested in real businesses generating real revenue, not recycled guru advice.",
+    title: "Capture every",
+    em: "lead",
+    body: "Website, WhatsApp, Google Ads, Meta Ads, forms, referrals and CRM. We ingest every channel instantly.",
   },
   {
     n: "02",
-    title: "Systems that",
-    em: "compound",
-    body: "We install repeatable machines for leads, calls and sales, so growth stacks month over month instead of resetting.",
+    title: "Execute every",
+    em: "follow-up",
+    body: "SalesAssist starts conversations instantly, qualifies prospects, books meetings and updates your CRM.",
   },
   {
     n: "03",
-    title: "Built for",
-    em: "coaches",
-    body: "Offers, Instagram, DM setting and closing. The exact levers that scale coaching and consulting businesses specifically.",
+    title: "Close more",
+    em: "business",
+    body: "Your team spends time speaking with qualified buyers instead of chasing leads and cold prospects.",
   },
   {
     n: "04",
-    title: "Move",
-    em: "fast",
-    body: "No six-month overhauls. We find the constraint and fix it, so you feel the difference in weeks, not quarters.",
+    title: "Clear outcome",
+    em: "guaranteed",
+    body: "Nothing gets forgotten. Nothing falls through the cracks. Every single opportunity reaches a definitive state.",
   },
 ];
 
@@ -93,7 +109,7 @@ export function Problems() {
   return (
     <>
       {/* 1. Problems Section (Dark) */}
-      <section id="problems" className="bg-[#121213] text-[#F5F5F5] px-6 py-24 sm:px-12 md:py-28 border-b border-[#2B2B2E]/50">
+      <section id="problems" className="bg-background text-foreground px-6 py-24 sm:px-12 md:py-28">
         {/* Custom inline style animations matching the website */}
         <style>{`
           .custom-ul-capped {
@@ -135,36 +151,60 @@ export function Problems() {
             0%, 100% { opacity: 1; }
             50% { opacity: .12; }
           }
+
+           /* Shaking animation for manual work lines */
+          .pg-shake {
+            animation: pgshake 1.8s ease-in-out infinite;
+          }
+          .pg-shake2 { animation-delay: 0.3s; }
+          .pg-shake3 { animation-delay: 0.6s; }
+          @keyframes pgshake {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+          }
+
+          /* Bouncing animation for visibility arrow */
+          .pg-bounce {
+            animation: pgbounce 1.6s ease-in-out infinite;
+          }
+          @keyframes pgbounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(3px); }
+          }
+
+          /* Alert blink for inconsistent calendar */
+          .pg-alert-blink {
+            animation: pgalert 1.5s ease-in-out infinite;
+          }
+          @keyframes pgalert {
+            0%, 100% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+          }
         `}</style>
 
         <div className="mx-auto max-w-6xl">
           <Reveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl sm:text-[42px] lg:text-[52px] font-bold tracking-tight text-white leading-[1.15]">
-                A great coach with a <span className="custom-ul-capped">capped</span>
-                <br className="max-sm:hidden" />
-                business.
+              <h2 className="text-3xl sm:text-[42px] lg:text-[52px] font-bold tracking-tight text-foreground leading-[1.15]">
+                You don't have a lead problem.<br />
+                You have a <span className="custom-ul-capped">follow-up</span> problem.
               </h2>
-              <p className="mt-6 text-[17px] sm:text-[19px] lg:text-[22px] leading-relaxed text-[#9C9C9C] max-w-3xl mx-auto">
-                The skills got you here. But without systems, growth
-                <br className="hidden sm:inline" />
-                stalls, income swings, and everything still runs through
-                <br className="hidden sm:inline" />
-                you.
+              <p className="mt-6 text-[17px] sm:text-[19px] lg:text-[22px] leading-relaxed text-muted-foreground max-w-3xl mx-auto">
+                Every day businesses spend thousands on marketing to generate enquiries. Yet many potential customers never receive the attention they deserve. Every missed conversation is revenue left on the table.
               </p>
             </div>
           </Reveal>
 
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
+          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {PROBLEMS.map((p, i) => (
               <Reveal key={p.title} delay={i * 90}>
-                <article className="group h-full rounded-[22px] border border-[#2B2B2E] bg-[#1A1A1C] p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#A6C82F]/30">
-                  <div className="flex-shrink-0 w-[46px] h-[46px] rounded-[12px] bg-[#2a1414] text-[#ff6b6b] flex items-center justify-center mb-6">
+                <article className="group h-full rounded-[22px] border border-border bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-lime/30 shadow-sm">
+                  <div className="flex-shrink-0 w-[46px] h-[46px] rounded-[12px] bg-[#556331]/10 text-[#556331] flex items-center justify-center mb-6">
                     {p.icon}
                   </div>
                   
-                  <h3 className="text-xl font-bold tracking-tight text-[#CFCFCF]">{p.title}</h3>
-                  <p className="mt-3.5 text-[14.5px] leading-relaxed text-[#9C9C9C]">{p.body}</p>
+                  <h3 className="text-xl font-bold tracking-tight text-foreground">{p.title}</h3>
+                  <p className="mt-3.5 text-[14.5px] leading-relaxed text-muted-foreground">{p.body}</p>
                 </article>
               </Reveal>
             ))}
@@ -172,8 +212,8 @@ export function Problems() {
         </div>
       </section>
 
-      {/* 2. Reasons Section (Light - I've built this three times) */}
-      <section id="about" className="bg-[#ECECEC] text-[#161616] px-6 py-24 sm:px-12 md:py-28">
+      {/* 2. Reasons Section / Introducing SalesAssist */}
+      <section id="about" className="bg-white text-foreground px-6 py-24 sm:px-12 md:py-28 border-y border-border">
         {/* Custom underline style */}
         <style>{`
           .custom-ul-olive {
@@ -199,13 +239,12 @@ export function Problems() {
           {/* Header */}
           <Reveal>
             <div className="max-w-3xl">
-              <h2 className="text-3xl sm:text-[38px] lg:text-[50px] font-bold tracking-tight text-[#161616] leading-[1.15]">
-                I've built this <span className="custom-ul-olive">three times</span>, in
-                <br className="max-sm:hidden" />
-                three niches.
+              <span className="font-mono text-xs font-bold text-lime uppercase tracking-wider">Introducing SalesAssist</span>
+              <h2 className="text-3xl sm:text-[38px] lg:text-[50px] font-bold tracking-tight text-foreground leading-[1.15] mt-2">
+                Your AI Sales <span className="custom-ul-olive">Execution Team</span>.
               </h2>
-              <p className="mt-6 text-[17px] sm:text-[19px] lg:text-[22px] leading-relaxed text-[#4C4C46] max-w-2xl">
-                This isn't theory. It's the exact playbook behind three <br className="hidden sm:inline" />seven-figure coaching businesses.
+              <p className="mt-6 text-[17px] sm:text-[19px] lg:text-[22px] leading-relaxed text-muted-foreground max-w-2xl">
+                Most businesses respond to low sales by buying more leads. The smartest businesses increase the value of every lead they already have. That's exactly what SalesAssist is built to do.
               </p>
             </div>
           </Reveal>
@@ -214,19 +253,19 @@ export function Problems() {
           <div className="mt-8 grid gap-5 sm:grid-cols-2">
             {REASONS.map((r, i) => (
               <Reveal key={r.n} delay={i * 80}>
-                <article className="h-full bg-[#f6f6f4] border border-black/5 rounded-[20px] py-7 px-8 shadow-[0_14px_34px_rgba(0,0,0,0.04)] hover:bg-[#efefed] transition-colors duration-300">
-                  <span className="font-mono text-xs font-bold text-[#5F7A0C] tracking-widest uppercase">
+                <article className="h-full bg-white border border-border rounded-[20px] py-7 px-8 shadow-[0_14px_34px_rgba(0,0,0,0.02)] hover:bg-[#efefed]/35 transition-colors duration-300">
+                  <span className="font-mono text-xs font-bold text-lime tracking-widest uppercase">
                     {r.n}
                   </span>
                   
-                  <h3 className="mt-3.5 text-2xl font-bold tracking-tight text-[#161616] flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <h3 className="mt-3.5 text-2xl font-bold tracking-tight text-foreground flex flex-wrap items-center gap-x-2 gap-y-1">
                     <span>{r.title}</span>
-                    <span className="bg-[#C9F23A] text-[#141709] px-2 py-0.5 rounded-[6px] font-bold text-[22px] leading-normal inline-block">
+                    <span className="bg-[#556331] text-white px-2 py-0.5 rounded-[6px] font-bold text-[22px] leading-normal inline-block">
                       {r.em}
                     </span>
                   </h3>
                   
-                  <p className="mt-4 text-[15px] leading-relaxed text-[#4C4C46]">
+                  <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
                     {r.body}
                   </p>
                 </article>

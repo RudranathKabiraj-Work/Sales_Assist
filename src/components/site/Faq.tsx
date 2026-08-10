@@ -3,44 +3,24 @@ import { Reveal } from "./Reveal";
 
 const FAQS = [
   {
-    q: "Who is this for?",
-    a: "Coaches, consultants and course creators already doing at least $20k/month who want to scale to $100k+ with systems instead of hustle.",
+    q: "Does SalesAssist replace my sales team?",
+    a: "No. It makes them more productive.",
   },
   {
-    q: "What happens on the call?",
-    a: "We look at your offer, traffic and funnel, find the #1 constraint holding you back, and map a clear plan to your next revenue level. No pressure, and no pitch unless it's genuinely a fit.",
+    q: "Will it work with my CRM?",
+    a: "Yes.",
   },
   {
-    q: "Why should I listen to you?",
-    a: "Over the last nine years I've built three separate seven-figure coaching businesses in three different niches. What I'll walk you through is the exact playbook, not recycled theory.",
+    q: "Does it support WhatsApp?",
+    a: "Yes.",
   },
   {
-    q: "Do you work in my niche?",
-    a: "Almost certainly. I've scaled businesses across three very different niches, and the core systems – offer, traffic, DM setting and closing – work for virtually any coaching or consulting business.",
+    q: "How quickly can we get started?",
+    a: "Usually within a few days.",
   },
   {
-    q: "Is this just about AI setters?",
-    a: "No. The AI appointment setter is one powerful piece. We work on your entire growth machine: your offer, Instagram ads, DM setting and your closing process.",
-  },
-  {
-    q: "How fast will I see results?",
-    a: "It depends on your starting point, but we fix the biggest bottleneck first. Most people feel a real difference within weeks, not months.",
-  },
-  {
-    q: "I already have a team – can you help?",
-    a: "Yes. We install the systems and processes your team plugs into, so they perform consistently without you babysitting them.",
-  },
-  {
-    q: "Do I need a big audience?",
-    a: "No, but you do need to already be getting some leads and making sales. This supercharges what's working – it won't build a business from scratch.",
-  },
-  {
-    q: "How much does it cost?",
-    a: "It depends on your situation and exactly what you need. We'll cover it transparently on the call, once we both know it's a fit.",
-  },
-  {
-    q: "How do I get started?",
-    a: "Book a call below, answer a few quick questions and grab a time. We'll take it from there.",
+    q: "Is it suitable for my business?",
+    a: "If your business depends on converting enquiries into customers, SalesAssist is designed for you.",
   },
 ];
 
@@ -48,7 +28,7 @@ export function Faq() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="bg-[#EBEBEB] text-zinc-900 px-6 py-24 sm:px-12 md:py-28">
+    <section id="faq" className="bg-secondary text-zinc-900 px-6 py-24 sm:px-12 md:py-28">
       <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Left Column */}
@@ -61,19 +41,10 @@ export function Faq() {
                 </span>
               </div>
               <h2 className="mt-5 text-xl font-bold tracking-tight text-zinc-900 sm:text-2xl">
-                Anything else?
+                Frequently Asked Questions
               </h2>
               <p className="mt-2 text-sm text-zinc-600 leading-relaxed">
-                Message me on Instagram at<br />
-                <a
-                  href="https://www.instagram.com/realryanwegner"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline font-medium text-zinc-900 hover:text-zinc-700"
-                >
-                  @realryanwegner
-                </a>
-                .
+                Have another query? Feel free to ask during our live demo call.
               </p>
             </Reveal>
           </div>

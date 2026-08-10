@@ -42,31 +42,32 @@
 
 :root {
   --radius: 0.875rem;
-  --background: oklch(0.16 0.005 120);
-  --foreground: oklch(0.97 0.005 120);
-  --card: oklch(0.2 0.006 120);
-  --card-foreground: oklch(0.97 0.005 120);
-  --popover: oklch(0.2 0.006 120);
-  --popover-foreground: oklch(0.97 0.005 120);
-  --primary: oklch(0.9 0.21 121);
-  --primary-foreground: oklch(0.2 0.05 121);
-  --secondary: oklch(0.24 0.006 120);
-  --secondary-foreground: oklch(0.97 0.005 120);
-  --muted: oklch(0.24 0.006 120);
-  --muted-foreground: oklch(0.68 0.008 120);
-  --accent: oklch(0.9 0.21 121);
-  --accent-foreground: oklch(0.2 0.05 121);
+  /* Background from app.salesassist.co.in (#f1f4f8) */
+  --background: #f1f4f8;
+  --foreground: oklch(0.14 0.006 240);
+  --card: #ffffff;
+  --card-foreground: oklch(0.14 0.006 240);
+  --popover: #ffffff;
+  --popover-foreground: oklch(0.14 0.006 240);
+  --primary: #556331;
+  --primary-foreground: #ffffff;
+  --secondary: #e4e8ef;
+  --secondary-foreground: oklch(0.14 0.006 240);
+  --muted: #e4e8ef;
+  --muted-foreground: oklch(0.45 0.008 240);
+  --accent: #556331;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.62 0.2 25);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(1 0 0 / 9%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.9 0.21 121);
-  --surface: oklch(0.19 0.006 120);
-  --surface-2: oklch(0.23 0.007 120);
-  --lime: oklch(0.9 0.21 121);
-  --lime-dim: oklch(0.9 0.21 121 / 14%);
-  --shadow-glow: 0 0 60px -10px oklch(0.9 0.21 121 / 35%);
-  --grid-line: oklch(1 0 0 / 3.5%);
+  --border: oklch(0 0 0 / 10%);
+  --input: oklch(0 0 0 / 8%);
+  --ring: #556331;
+  --surface: #e8ecf2;
+  --surface-2: #dde2ea;
+  --lime: #556331;
+  --lime-dim: rgba(85, 99, 49, 0.15);
+  --shadow-glow: 0 0 60px -10px rgba(85, 99, 49, 0.35);
+  --grid-line: oklch(0 0 0 / 4%);
 }
 
 @layer base {
@@ -92,8 +93,371 @@
     color: oklch(0.2 0.05 121);
   }
 
+  /* Premium Brand Button Transitions & Styles */
+  a, button {
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   html {
     scroll-behavior: smooth;
+  }
+}
+
+/* ── Rolling hills CTA ─────────────────────────────────────────────── */
+.btn-hills {
+  --hills-sky-from: #6f8440;
+  --hills-sky-to: #556331;
+  --hills-far: #7a9148;
+  --hills-mid: #4a582b;
+  --hills-near: #2a3418;
+  --hills-mist: rgba(232, 245, 176, 0.28);
+  --hills-glow: rgba(197, 224, 106, 0.55);
+  --hills-label: #ffffff;
+  --hills-label-hover: #f8fce9;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, var(--hills-sky-from), var(--hills-sky-to)) !important;
+  color: var(--hills-label) !important;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.16) inset,
+    0 10px 24px -12px rgba(42, 52, 24, 0.55);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.35s ease !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-hills__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.btn-hills__sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(236, 250, 180, 0.35), transparent 58%),
+    linear-gradient(180deg, var(--hills-sky-from), var(--hills-sky-to));
+  transition: opacity 0.45s ease;
+}
+
+.btn-hills__glow {
+  position: absolute;
+  left: 50%;
+  bottom: -40%;
+  width: 140%;
+  height: 90%;
+  translate: -50% 0;
+  background: radial-gradient(closest-side, var(--hills-glow), transparent 72%);
+  opacity: 0;
+  filter: blur(2px);
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translate3d(0, 18%, 0) scale(0.85);
+}
+
+.btn-hills__mist {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 8%;
+  height: 55%;
+  background:
+    radial-gradient(40% 70% at 20% 80%, var(--hills-mist), transparent 70%),
+    radial-gradient(45% 80% at 55% 90%, var(--hills-mist), transparent 72%),
+    radial-gradient(35% 60% at 82% 75%, var(--hills-mist), transparent 70%);
+  opacity: 0;
+  filter: blur(6px);
+  transform: translate3d(0, 40%, 0);
+  transition:
+    opacity 0.6s ease,
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 4;
+}
+
+.btn-hills__svg {
+  position: absolute;
+  left: -8%;
+  width: 116%;
+  height: 100%;
+  bottom: 0;
+  display: block;
+  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.btn-hills__svg--far {
+  color: var(--hills-far);
+  opacity: 0.9;
+  transform: translate3d(0, 78%, 0) scale(1.05);
+  z-index: 1;
+  filter: saturate(1.05);
+}
+
+.btn-hills__svg--mid {
+  color: var(--hills-mid);
+  opacity: 0.96;
+  transform: translate3d(0, 84%, 0) scale(1.08);
+  z-index: 2;
+}
+
+.btn-hills__svg--near {
+  color: var(--hills-near);
+  transform: translate3d(0, 90%, 0) scale(1.12);
+  z-index: 3;
+  filter: drop-shadow(0 -8px 14px rgba(20, 23, 9, 0.18));
+}
+
+.btn-hills__sheen {
+  position: absolute;
+  inset: -40% -60%;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.34) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 65%
+  );
+  opacity: 0;
+  transform: translate3d(-30%, 0, 0) rotate(8deg);
+  transition:
+    opacity 0.2s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 5;
+  mix-blend-mode: soft-light;
+}
+
+.btn-hills__label {
+  position: relative;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-shadow: 0 1px 0 rgba(20, 23, 9, 0.18);
+  transition: letter-spacing 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn-hills:hover,
+.btn-hills:focus-visible {
+  transform: translateY(-2px) !important;
+  color: var(--hills-label-hover) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.2) inset,
+    0 16px 36px -14px rgba(85, 99, 49, 0.55),
+    0 0 0 1px rgba(197, 224, 106, 0.28);
+  outline: none;
+}
+
+.btn-hills:hover .btn-hills__label,
+.btn-hills:focus-visible .btn-hills__label {
+  letter-spacing: 0.015em;
+}
+
+.btn-hills:hover .btn-hills__glow,
+.btn-hills:focus-visible .btn-hills__glow {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.btn-hills:hover .btn-hills__mist,
+.btn-hills:focus-visible .btn-hills__mist {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  animation: hills-mist-drift 5.5s ease-in-out infinite;
+}
+
+.btn-hills:hover .btn-hills__svg--far,
+.btn-hills:focus-visible .btn-hills__svg--far {
+  transform: translate3d(-3%, 0%, 0) scale(1.05);
+  animation: hills-drift-far 5.2s ease-in-out 0.15s infinite;
+}
+
+.btn-hills:hover .btn-hills__svg--mid,
+.btn-hills:focus-visible .btn-hills__svg--mid {
+  transform: translate3d(2%, 0%, 0) scale(1.08);
+  animation: hills-drift-mid 4.2s ease-in-out 0.08s infinite;
+}
+
+.btn-hills:hover .btn-hills__svg--near,
+.btn-hills:focus-visible .btn-hills__svg--near {
+  transform: translate3d(-1.5%, 0%, 0) scale(1.12);
+  animation: hills-drift-near 3.4s ease-in-out infinite;
+}
+
+.btn-hills:hover .btn-hills__sheen,
+.btn-hills:focus-visible .btn-hills__sheen {
+  opacity: 1;
+  transform: translate3d(55%, 0, 0) rotate(8deg);
+}
+
+.btn-hills:active {
+  transform: translateY(0) scale(0.985) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 8px 16px -12px rgba(42, 52, 24, 0.5);
+}
+
+.btn-hills:active .btn-hills__svg,
+.btn-hills:active .btn-hills__mist,
+.btn-hills:active .btn-hills__sheen {
+  animation: none !important;
+}
+
+/* Dark variant */
+.btn-hills-dark {
+  --hills-sky-from: #1c2410;
+  --hills-sky-to: #141709;
+  --hills-far: #2f3c18;
+  --hills-mid: #182110;
+  --hills-near: #0a0e05;
+  --hills-mist: rgba(197, 224, 106, 0.16);
+  --hills-glow: rgba(148, 177, 52, 0.38);
+  --hills-label: #c5e06a;
+  --hills-label-hover: #eaf7b0;
+}
+
+.btn-hills-dark .btn-hills__sky {
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(148, 177, 52, 0.22), transparent 58%),
+    linear-gradient(180deg, var(--hills-sky-from), var(--hills-sky-to));
+}
+
+.btn-hills-dark .btn-hills__label {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.btn-hills-dark:hover,
+.btn-hills-dark:focus-visible {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 16px 36px -14px rgba(20, 23, 9, 0.55),
+    0 0 0 1px rgba(148, 177, 52, 0.3);
+}
+
+/* Outline / secondary button — quiet lift, no scale */
+a.border-border.bg-white,
+button.border-border.bg-white {
+  transition:
+    color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+a.border-border.bg-white:hover,
+button.border-border.bg-white:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(85, 99, 49, 0.4) !important;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.05) !important;
+  background-color: #f1f4f8 !important;
+}
+a.border-border.bg-white:active,
+button.border-border.bg-white:active {
+  transform: translateY(0) !important;
+}
+
+@keyframes hills-drift-far {
+  0%,
+  100% {
+    transform: translate3d(-3%, 0%, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(4%, -2%, 0) scale(1.07);
+  }
+}
+
+@keyframes hills-drift-mid {
+  0%,
+  100% {
+    transform: translate3d(2%, 0%, 0) scale(1.08);
+  }
+  50% {
+    transform: translate3d(-4%, 1.5%, 0) scale(1.1);
+  }
+}
+
+@keyframes hills-drift-near {
+  0%,
+  100% {
+    transform: translate3d(-1.5%, 0%, 0) scale(1.12);
+  }
+  50% {
+    transform: translate3d(3%, 1%, 0) scale(1.14);
+  }
+}
+
+@keyframes hills-mist-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translate3d(4%, -6%, 0);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-hills,
+  .btn-hills__svg,
+  .btn-hills__mist,
+  .btn-hills__glow,
+  .btn-hills__sheen,
+  .btn-hills__label {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .btn-hills:hover,
+  .btn-hills:focus-visible,
+  .btn-hills:active {
+    transform: none !important;
+  }
+
+  .btn-hills:hover .btn-hills__svg--far,
+  .btn-hills:focus-visible .btn-hills__svg--far,
+  .btn-hills:hover .btn-hills__svg--mid,
+  .btn-hills:focus-visible .btn-hills__svg--mid,
+  .btn-hills:hover .btn-hills__svg--near,
+  .btn-hills:focus-visible .btn-hills__svg--near {
+    transform: translate3d(0, 0, 0) scale(1.08);
+    animation: none !important;
+  }
+
+  .btn-hills:hover .btn-hills__mist,
+  .btn-hills:focus-visible .btn-hills__mist,
+  .btn-hills:hover .btn-hills__glow,
+  .btn-hills:focus-visible .btn-hills__glow {
+    opacity: 0.85;
+    transform: none;
+    animation: none !important;
+  }
+
+  .btn-hills:hover .btn-hills__sheen,
+  .btn-hills:focus-visible .btn-hills__sheen {
+    opacity: 0;
+    transform: none;
   }
 }
 
