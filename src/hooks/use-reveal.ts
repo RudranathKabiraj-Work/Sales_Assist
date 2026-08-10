@@ -59,10 +59,18 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
 }
 
 export function useCountUp(target: number, start: boolean, duration = 1400) {
-  const [value, setValue] = useState(0);
+  // On mobile/iOS: skip animation entirely, show final number immediately.
+  const isMobile = typeof window !== "undefined" && (
+    /iP(hone|od|ad)/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) ||
+    window.matchMedia("(pointer: coarse)").matches ||
+    window.innerWidth < 1024
+  );
+
+  const [value, setValue] = useState(isMobile ? target : 0);
 
   useEffect(() => {
-    if (!start) return;
+    if (!start || isMobile) return;
     let raf = 0;
     const t0 = performance.now();
     const tick = (t: number) => {
@@ -73,7 +81,7 @@ export function useCountUp(target: number, start: boolean, duration = 1400) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [target, start, duration]);
+  }, [target, start, duration, isMobile]);
 
   return value;
 }

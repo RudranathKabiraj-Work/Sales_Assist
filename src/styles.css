@@ -14,8 +14,6 @@
   html.lenis,
   html {
     height: auto !important;
-    /* Do NOT use overflow:auto here — it conflicts with the overflow:hidden
-       we set below and creates double-scroll on some iOS versions. */
     overflow: visible !important;
     overscroll-behavior: auto !important;
     scroll-behavior: auto !important;
@@ -23,10 +21,32 @@
   body {
     overflow-y: auto !important;
     overscroll-behavior-y: auto !important;
-    /* iOS momentum scrolling */
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* ── Mobile animation kill-switch ────────────────────────────────────────
+   All decorative CSS keyframe animations (spinning clocks, floating particles,
+   bouncing bars, waveforms, etc.) run every frame and saturate the mobile GPU.
+   On mobile we stop them entirely — the sections still look great, just static.
+   This is the single biggest performance win for iOS/Android. */
+@media (max-width: 1023px) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    will-change: auto !important;
+  }
+  /* Restore the one transition we DO want: FAQ accordion open/close */
+  .faq-body {
+    transition-duration: 200ms !important;
+  }
+}
+
 
 @custom-variant dark (&:is(.dark *));
 
