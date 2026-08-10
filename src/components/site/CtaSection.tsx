@@ -85,7 +85,7 @@ export function CtaSection() {
                 variant="dark"
                 className="inline-flex items-center gap-2 rounded-[12px] px-[28px] py-[15px] text-[16px] font-bold"
               >
-                Book Your Demo →
+                Book Your Demo
               </HillsButton>
             </div>
           </div>
