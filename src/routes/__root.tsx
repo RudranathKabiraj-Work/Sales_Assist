@@ -135,7 +135,7 @@ function RootComponent() {
   const [enableSmooth, setEnableSmooth] = useState(false);
 
   useEffect(() => {
-    setEnableSmooth(!isTouchDevice());
+    setEnableSmooth(!isTouchDevice() && window.innerWidth >= 1024);
   }, []);
 
   return (
