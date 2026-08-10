@@ -102,12 +102,27 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: clip;
   }
 
   html {
     -webkit-text-size-adjust: 100%;
-    overflow-x: clip;
+  }
+
+  /* On desktop only: clip horizontal overflow. On mobile, overflow-x:clip on
+     html breaks native touch scroll on iOS/Android and causes the page to snap
+     back to the top. Use overflow:hidden on mobile which is safe for touch. */
+  @media (max-width: 1023px) {
+    html, body {
+      overflow-x: hidden !important;
+    }
+  }
+  @media (min-width: 1024px) {
+    html, body {
+      overflow-x: clip;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   ::selection {
@@ -123,12 +138,6 @@
       box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
       filter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  @media (min-width: 1024px) {
-    html {
-      scroll-behavior: smooth;
-    }
   }
 }
 

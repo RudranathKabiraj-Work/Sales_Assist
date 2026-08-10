@@ -8,14 +8,19 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // On touch devices and smaller screens, IntersectionObserver callbacks can be delayed,
-    // dropped, or fail to trigger due to tall stacked layouts. Keep everything visible.
-    // Same for reduced motion.
-    if (isTouchDevice() || prefersReducedMotion() || window.innerWidth < 1024) return;
+
+    // On mobile/tablet or reduced-motion: always visible, no animation.
+    const isMobileViewport = window.innerWidth < 1024;
+    if (isTouchDevice() || prefersReducedMotion() || isMobileViewport) {
+      setVisible(true);
+      return;
+    }
+
     // Start above-the-fold content already visible so it never waits on
     // hydration. Only animate-in elements that begin below the fold.
     const rect = el.getBoundingClientRect();
     if (rect.top < window.innerHeight) return;
+
     setVisible(false);
     const io = new IntersectionObserver(
       (entries) => {
