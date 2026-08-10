@@ -60,7 +60,7 @@ export function Hero() {
       `}</style>
 
       <div className="grid-bg pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_50%_0%,black,transparent_75%)]" />
-      <div className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[900px] -translate-x-1/2 rounded-full bg-lime/10 blur-[140px]" />
+      <div className="mobile-hide-glow pointer-events-none absolute left-1/2 top-0 h-[420px] w-[900px] -translate-x-1/2 rounded-full bg-lime/10 blur-[140px]" />
 
       <div className="relative mx-auto max-w-4xl text-center z-10 px-4">
         <h1 className="lh-title text-foreground">

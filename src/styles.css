@@ -45,6 +45,29 @@
   .faq-body {
     transition-duration: 200ms !important;
   }
+
+  /* ── Reveal wrapper: completely transparent on mobile ──────────────────
+     display:contents removes the box entirely — no opacity, no transform,
+     no stacking context. Children slot directly into the parent layout.
+     This is the nuclear option: the .reveal div stops existing on mobile. */
+  .reveal {
+    display: contents !important;
+  }
+
+  /* ── Section paint isolation ───────────────────────────────────────────
+     contain:content tells iOS to paint each section independently.
+     Scrolling into one section never causes the whole page to repaint. */
+  section {
+    contain: content;
+  }
+
+  /* ── Remove expensive GPU blur/glow divs on mobile ────────────────────
+     Large blur() operations (blur-[140px], blur(20px)) are extremely
+     expensive on iOS GPU. These are decorative-only — hiding them on
+     mobile has zero UX impact but massive performance gain. */
+  .mobile-hide-glow {
+    display: none !important;
+  }
 }
 
 

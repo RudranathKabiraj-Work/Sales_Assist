@@ -181,9 +181,9 @@ export function Dashboard() {
           {/* Right Column: Dashboard Widget */}
           <div className="lg:col-span-7 relative max-w-[580px] mx-auto w-full">
             <Reveal className="relative">
-              {/* Top Edge Glow */}
+              {/* Top Edge Glow — hidden on mobile (expensive GPU blur) */}
               <div 
-                className="absolute pointer-events-none rounded-full"
+                className="mobile-hide-glow absolute pointer-events-none rounded-full"
                 style={{
                   top: "-100px",
                   left: "10%",
