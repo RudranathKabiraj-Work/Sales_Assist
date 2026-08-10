@@ -40,9 +40,11 @@ export function Nav() {
             className="h-[130px] w-auto object-contain mix-blend-multiply my-[-38px]"
             style={{
               WebkitMaskImage:
-                "radial-gradient(120% 115% at 50% 50%, black 55%, rgba(0,0,0,0.6) 75%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(180deg, transparent 28%, black 36%, black 64%, transparent 72%)",
               maskImage:
-                "radial-gradient(120% 115% at 50% 50%, black 55%, rgba(0,0,0,0.6) 75%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(180deg, transparent 28%, black 36%, black 64%, transparent 72%)",
+              WebkitMaskComposite: "source-in",
+              maskComposite: "intersect",
             }}
           />
         </a>
