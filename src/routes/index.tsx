@@ -9,7 +9,7 @@ import { Dashboard } from "@/components/site/Dashboard";
 import { CtaSection, Footer } from "@/components/site/CtaSection";
 import { Faq } from "@/components/site/Faq";
 
-const title = "Ryan Wegner — Scale Past $100k/Month Without Living In Your DMs";
+const title = "SalesAssist";
 const description =
   "I help coaches and consultants install the systems behind three seven-figure businesses so they can scale past $100k/month without living in their DMs.";
 

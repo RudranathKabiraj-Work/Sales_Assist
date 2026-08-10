@@ -1,12 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.15) {
   const ref = useRef<T | null>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Start above-the-fold content already visible so it never waits on
+    // hydration. Only animate-in elements that begin below the fold.
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight) return;
+    setVisible(false);
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {

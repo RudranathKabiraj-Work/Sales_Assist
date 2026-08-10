@@ -115,7 +115,7 @@ export function Footer() {
               href="#start"
               className="inline-flex items-center gap-[9px] font-bold text-[15px] px-[26px] py-[14px] rounded-[12px]"
             >
-              Book A Demo →
+              Book a Demo
             </HillsButton>
           </div>
         </div>
@@ -127,7 +127,7 @@ export function Footer() {
           </div>
 
           <div className="flex gap-[22px]">
-            <span>salesassist.co.in</span>
+            <span>Product by BDA Technologies</span>
           </div>
         </div>
       </div>

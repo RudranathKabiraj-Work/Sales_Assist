@@ -66,7 +66,7 @@ export function Nav() {
             href="#start"
             className="hidden rounded-xl px-5 py-2.5 text-sm font-bold sm:inline-flex"
           >
-            Book A Call
+            Book a Demo
           </HillsButton>
           <button
             aria-label="Menu"
@@ -100,7 +100,7 @@ export function Nav() {
             onClick={() => setOpen(false)}
             className="mt-2 flex w-full rounded-xl py-2.5 text-center text-sm font-bold"
           >
-            Book A Call
+            Book a Demo
           </HillsButton>
         </div>
       )}
