@@ -31,6 +31,8 @@
    On mobile we stop them entirely — the sections still look great, just static.
    This is the single biggest performance win for iOS/Android. */
 @media (max-width: 1023px) {
+  /* Keep animations enabled on mobile per user request; comment out the kill-switch */
+  /*
   *,
   *::before,
   *::after {
@@ -41,6 +43,7 @@
     transition-delay: 0s !important;
     will-change: auto !important;
   }
+  */
   /* Restore the one transition we DO want: FAQ accordion open/close */
   .faq-body {
     transition-duration: 200ms !important;

@@ -6,7 +6,8 @@ function shouldSkipAnimation(): boolean {
   if (/iP(hone|od|ad)/.test(ua)) return true;
   if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) return true;
   if (window.matchMedia("(pointer: coarse)").matches) return true;
-  if (window.innerWidth < 1024) return true;
+  // Removed width check to allow animations on mobile tablets
+  // if (window.innerWidth < 1024) return true;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return true;
   return false;
 }
@@ -45,10 +46,11 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(threshold = 0.
     io.observe(el);
     // Safety net: never allow content to stay hidden if the observer never
     // fires (slow mobile devices, scroll container quirks, etc).
+    // Reduced timeout for mobile to avoid long blank screens.
     const fallback = window.setTimeout(() => {
       io.disconnect();
       setVisible(true);
-    }, 3000);
+    }, 1000);
     return () => {
       io.disconnect();
       clearTimeout(fallback);
@@ -63,8 +65,7 @@ export function useCountUp(target: number, start: boolean, duration = 1400) {
   const isMobile = typeof window !== "undefined" && (
     /iP(hone|od|ad)/.test(navigator.userAgent) ||
     (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) ||
-    window.matchMedia("(pointer: coarse)").matches ||
-    window.innerWidth < 1024
+    window.matchMedia("(pointer: coarse)").matches
   );
 
   const [value, setValue] = useState(isMobile ? target : 0);
